@@ -2,12 +2,14 @@
 <html>
 <head>
     <title>Airbnb Booking</title>
+    <link rel="stylesheet" href="styles.css">
 
     <style>
         body {
             background-color: #121212;
             color: white;
             font-family: Arial, sans-serif;
+            text-align: center;
         }
 
         h1, h2 {
@@ -17,6 +19,7 @@
         table {
             color: white;
             border-collapse: collapse;
+            margin: 0 auto;
         }
 
         th, td {
@@ -41,12 +44,70 @@
             background-color: #1f1f1f;
             text-align: center;
         }
+
+        #searchBar {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            margin: 15px auto;
+            border: 2px solid #ff5a5f;
+            border-radius: 5px;
+            background-color: #1f1f1f;
+            color: white;
+            font-size: 16px;
+            display: block;
+        }
+
+        #searchBar::placeholder {
+            color: #888;
+        }
+
+        .internal-paragraph {
+            color: orange;
+            font-weight: bold;
+        }
+
+        ul, ol {
+            display: inline-block;
+            text-align: left;
+        }
+
+        pre, blockquote {
+            display: inline-block;
+            text-align: left;
+        }
+
+        .internal-highlight {
+            color: grey;
+        }
+
+        .internal-building {
+            color: grey;
+        }
     </style>
 </head>
 
 <body>
 
 <h1>Airbnb Booking System</h1>
+
+<h2>About the Airbnb App</h2>
+
+<p style="color: blue; font-style: italic;">The Airbnb app revolutionizes travel by connecting millions of hosts and guests worldwide. With an intuitive interface, users can browse thousands of unique properties, from cozy apartments to luxury villas, all from their mobile devices.</p>
+
+<p class="internal-paragraph">The app offers seamless booking experiences with secure payment processing, instant confirmations, and real-time communication with hosts. Features include saved searches, wishlists, and personalized recommendations based on your travel preferences.</p>
+
+<p class="external-paragraph">Airbnb's mobile platform provides 24/7 customer support, trip management tools, and the ability to modify or cancel reservations on the go. The app has transformed how people travel, making accommodation booking faster, easier, and more accessible than ever before.</p>
+
+<h1 style="color: black;">Premium Locations</h1>
+<h1 class="internal-highlight">Verified Properties</h1>
+<h1 class="external-highlight">Instant Booking Available</h1>
+
+<h3 style="color: black;">Nairobi City Center</h3>
+<h3 class="internal-building">Mombasa Beachfront</h3>
+<h3 class="external-building">Nanyuki Mountain View</h3>
+
+<hr>
 
 <!-- About Us Section -->
 
@@ -169,12 +230,13 @@ title="Airbnb Home Tour"
 allowfullscreen>
 </iframe>
 
-
 <hr>
 
 <h2>Available Properties</h2>
 
-<table border="1">
+<input type="text" id="searchBar" placeholder="Search by name, location, or status..." onkeyup="filterProperties()">
+
+<table border="1" id="propertyTable">
 <tr>
 <th>ID</th>
 <th>Name</th>
@@ -241,6 +303,28 @@ allowfullscreen>
 </tr>
 
 </table>
+
+<script>
+function filterProperties() {
+    const input = document.getElementById('searchBar').value.toLowerCase();
+    const table = document.getElementById('propertyTable');
+    const rows = table.getElementsByTagName('tr');
+    
+    for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        let found = false;
+        
+        for (let j = 0; j < cells.length; j++) {
+            if (cells[j].textContent.toLowerCase().includes(input)) {
+                found = true;
+                break;
+            }
+        }
+        
+        rows[i].style.display = found ? '' : 'none';
+    }
+}
+</script>
 
 <footer>
 <p>Contact: 0718292182</p>
