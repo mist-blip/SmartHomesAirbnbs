@@ -1,325 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Airbnb Booking</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smarthomes - Find Your Perfect Stay</title>
     <link rel="stylesheet" href="styles.css">
-
-    <style>
-        body {
-            background-color: #121212;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        h1, h2 {
-            color: white;
-        }
-
-        table {
-            color: white;
-            border-collapse: collapse;
-            margin: 0 auto;
-        }
-
-        th, td {
-            padding: 8px;
-        }
-
-
-
-        footer {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #1f1f1f;
-            text-align: center;
-        }
-
-        #searchBar {
-            width: 100%;
-            max-width: 500px;
-            padding: 10px;
-            margin: 15px auto;
-            border: 2px solid #ff5a5f;
-            border-radius: 5px;
-            background-color: #1f1f1f;
-            color: white;
-            font-size: 16px;
-            display: block;
-        }
-
-        #searchBar::placeholder {
-            color: #888;
-        }
-
-        .internal-paragraph {
-            color: white;
-            font-weight: bold;
-        }
-
-        ul, ol {
-            display: inline-block;
-            text-align: left;
-        }
-
-        pre, blockquote {
-            display: inline-block;
-            text-align: left;
-        }
-
-        .internal-highlight {
-            color: white;
-        }
-
-        .internal-building {
-            color: white;
-        }
-    </style>
 </head>
-
 <body>
+    <header>
+        <nav>
+            <div class="logo">🏠 Smarthomes</div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search destinations...">
+                <button onclick="searchProperties()">Search</button>
+            </div>
+        </nav>
+    </header>
 
-<h1 id="main-heading">Airbnb Booking System</h1>
+    <main>
+        <section class="hero">
+            <h1>Discover Kenya's Hidden Gems</h1>
+            <p>From Nairobi to the coast, find your perfect Kenyan getaway 🇰🇪</p>
+        </section>
 
-<h2 class="section-title">About the Airbnb App</h2>
+        <section class="filters">
+            <button class="filter-btn active" onclick="filterProperties('all')">All</button>
+            <button class="filter-btn" onclick="filterProperties('apartment')">Apartments</button>
+            <button class="filter-btn" onclick="filterProperties('house')">Houses</button>
+            <button class="filter-btn" onclick="filterProperties('villa')">Villas</button>
+        </section>
 
-<p id="para1">The Airbnb app revolutionizes travel by connecting millions of hosts and guests worldwide. With an intuitive interface, users can browse thousands of unique properties, from cozy apartments to luxury villas, all from their mobile devices.</p>
+        <section class="properties" id="propertiesGrid"></section>
 
-<p id="para2">The app offers seamless booking experiences with secure payment processing, instant confirmations, and real-time communication with hosts. Features include saved searches, wishlists, and personalized recommendations based on your travel preferences.</p>
+        <section class="about-section">
+            <div class="about-content">
+                <h2>About Smarthomes Kenya</h2>
+                <p class="about-intro">Your trusted partner for discovering exceptional stays across Kenya</p>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-icon">🏠</div>
+                        <h3>Curated Properties</h3>
+                        <p>Handpicked homes from Nairobi's vibrant neighborhoods to Kenya's stunning coastline</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">🌍</div>
+                        <h3>Local Experience</h3>
+                        <p>Authentic Kenyan hospitality with modern comfort and convenience</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">✨</div>
+                        <h3>Quality Assured</h3>
+                        <p>Every property verified for safety, cleanliness, and exceptional standards</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">💚</div>
+                        <h3>Community First</h3>
+                        <p>Supporting local hosts and sustainable tourism across Kenya</p>
+                    </div>
+                </div>
+                <div class="about-story">
+                    <h3>Our Story</h3>
+                    <p>Founded in Nairobi, Smarthomes was born from a passion to showcase Kenya's incredible diversity. From the bustling streets of the capital to the serene beaches of the coast, from safari lodges in the Mara to mountain retreats near Mount Kenya - we connect travelers with unforgettable Kenyan experiences.</p>
+                    <p>We believe every stay should tell a story, and every guest should feel the warmth of Kenyan hospitality. Karibu nyumbani - welcome home! 🇰🇪</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-<p class="highlight-text">Airbnb's mobile platform provides 24/7 customer support, trip management tools, and the ability to modify or cancel reservations on the go. The app has transformed how people travel, making accommodation booking faster, easier, and more accessible than ever before.</p>
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalRating" style="color: #718096; font-size: 16px; margin-bottom: 5px;"></p>
+            <p id="modalLocation" style="color: #4a5568; font-size: 16px; font-weight: 600;"></p>
+            <img id="modalImage" src="" alt="">
+            <p id="modalDescription"></p>
+            <p class="price" id="modalPrice" style="font-size: 24px; margin-top: 15px;"><span style="font-weight: 400; font-size: 18px; color: #718096;">per night</span></p>
+            <div class="booking-form">
+                <input type="date" id="checkIn" placeholder="Check-in" required>
+                <input type="date" id="checkOut" placeholder="Check-out" required>
+                <input type="number" id="guests" placeholder="Number of guests" min="1" max="10" required>
+                <button onclick="confirmBooking()">✨ Reserve Now</button>
+            </div>
+        </div>
+    </div>
 
-<h1 class="premium-heading">Premium Locations</h1>
-<h1 class="internal-highlight">Verified Properties</h1>
-<h1 class="external-highlight">Instant Booking Available</h1>
-
-<h3 id="location1">Nairobi City Center</h3>
-<h3 class="internal-building">Mombasa Beachfront</h3>
-<h3 class="external-building">Nanyuki Mountain View</h3>
-
-<hr>
-
-<!-- About Us Section -->
-
-<h2 id="about-heading">About Us</h2>
-<p class="info-text">
-Smart Homes Airbnb provides comfortable, affordable, and secure accommodation 
-for travelers across Kenya. We specialize in modern apartments, luxury villas, 
-and cozy cabins designed to give our guests a home-away-from-home experience.
-</p>
-
-<p id="para3">
-Our mission is to deliver exceptional hospitality, flexible booking options, 
-and 24/7 customer support to ensure every stay is memorable and stress-free.
-</p>
-
-<hr>
-
-<!-- Paragraph Formatting -->
-
-<p><b>Airbnb booking allows travelers to find comfortable and affordable accommodation anywhere in the world.</b></p>
-
-<p><i>Many users prefer Airbnb because it offers unique homes and personalized experiences.</i></p>
-
-<p><u>Booking an Airbnb is simple and can be completed in just a few minutes online.</u></p>
-
-<p>Check-in date: 15<sup>th</sup> March 2026</p>
-
-
-<p><strike>Old price was $200 per night</strike></p>
-
-<p id="para4"><mark>Special discount available for early bookings!</mark></p>
-
-<p class="quote-text">"Airbnb connects millions of hosts and guests around the world."</p>
-
-<blockquote>
-Airbnb provides flexible booking options, secure payment systems,
-and customer support to ensure safe and reliable travel experiences.
-</blockquote>
-
-<hr>
-
-<h4 class="steps-heading">Booking Steps</h4>
-Search Property<br>
-Choose Location<br>
-Select Dates<br>
-Confirm Payment<br>
-
-<hr>
-
-<h4 id="categories-heading">Property Categories</h4>
-<hr>
-Apartments
-<hr>
-Villas
-<hr>
-Cabins
-<hr>
-
-<h2>Sample Booking Details</h2>
-<pre>
-Location: Nairobi
-Price: $80 per night
-Rating: 4.8 Stars
-</pre>
-
-<h2>How to Book</h2>
-<ul>
-<li>Search property</li>
-<li>Select dates</li>
-<li>Check reviews</li>
-<li>Make payment</li>
-<li>Confirm booking</li>
-</ul>
-
-<h2>Booking Process</h2>
-<ol>
-<li>Create Airbnb account</li>
-<li>Login</li>
-<li>Choose location</li>
-<li>Select property</li>
-<li>Book now</li>
-</ol>
-
-<h2>Available Options</h2>
-<ul>
-<li>Property Types
-    <ul>
-        <li>Apartment</li>
-        <li>Villa</li>
-        <li>Cabin</li>
-    </ul>
-</li>
-<li>Booking Options
-    <ul>
-        <li>Instant Book</li>
-        <li>Reserve</li>
-    </ul>
-</li>
-</ul>
-
-<h2>Featured Airbnb Homes</h2>
-
-<img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6" alt="Airbnb House">
-<img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85" alt="Airbnb Interior">
-<img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" alt="Luxury Airbnb">
-
-<hr>
-
-<h2>Airbnb Video Tours</h2>
-
-<iframe width="350" height="200"
-src="https://www.youtube.com/embed/5nSmdllDCtU"
-title="Airbnb Official Ad"
-allowfullscreen>
-</iframe>
-
-<iframe width="350" height="200"
-src="https://www.youtube.com/embed/dA2F0qScxrI"
-title="Airbnb Home Tour"
-allowfullscreen>
-</iframe>
-
-<hr>
-
-<h2>Available Properties</h2>
-
-<input type="text" id="searchBar" placeholder="Search by name, location, or status..." onkeyup="filterProperties()">
-
-<table border="1" id="propertyTable">
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>Location</th>
-<th>Price</th>
-<th>Rating</th>
-<th>Guests</th>
-<th>Bedrooms</th>
-<th>Bathrooms</th>
-<th>Check-in</th>
-<th>Status</th>
-</tr>
-
-<tr>
-<td>1</td>
-<td>City Apartment</td>
-<td>Nairobi</td>
-<td>$80</td>
-<td>4.5</td>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>15/03/26</td>
-<td>Available</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>Beach Villa</td>
-<td>Mombasa</td>
-<td>$200</td>
-<td>4.9</td>
-<td>6</td>
-<td>3</td>
-<td>2</td>
-<td>20/03/26</td>
-<td>Booked</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td>Mountain Cabin</td>
-<td>Nanyuki</td>
-<td>$120</td>
-<td>4.7</td>
-<td>4</td>
-<td>2</td>
-<td>1</td>
-<td>18/03/26</td>
-<td>Available</td>
-</tr>
-
-<tr>
-<td>4</td>
-<td>Studio Room</td>
-<td>Kisumu</td>
-<td>$60</td>
-<td>4.3</td>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>22/03/26</td>
-<td>Available</td>
-</tr>
-
-</table>
-
-<script>
-function filterProperties() {
-    const input = document.getElementById('searchBar').value.toLowerCase();
-    const table = document.getElementById('propertyTable');
-    const rows = table.getElementsByTagName('tr');
-    
-    for (let i = 1; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        let found = false;
-        
-        for (let j = 0; j < cells.length; j++) {
-            if (cells[j].textContent.toLowerCase().includes(input)) {
-                found = true;
-                break;
-            }
-        }
-        
-        rows[i].style.display = found ? '' : 'none';
-    }
-}
-</script>
-
-<footer>
-<p>Contact: 0718292182</p>
-<p>For more information visit @smarthomesairbnbs@gmail.com</p>
-</footer>
-
+    <script src="script.js"></script>
 </body>
 </html>
